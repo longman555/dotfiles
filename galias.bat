@@ -57,7 +57,7 @@ rem     if %count% geq 2 (set oldcom=%oldcom% %%f)
 rem )
 
 :MAIN
-rem 二重引用符で囲まなければうまく機能しない
+rem %oldcom% を二重引用符で囲まなければうまく機能しない
 rem git brv branch -v 及び git brv "branch -v" のいずれでも機能する
 git config --global alias.%newcom% "%oldcom%"
 echo git config --global alias.%newcom% "%oldcom%" >> git_aliases.bat

@@ -19,3 +19,5 @@ git config --global alias.bra "branch -a"
 rem git checkout
 git config --global alias.co "checkout -"
 git config --global alias.cob "checkout -b"
+git config --global alias.brv "branch -v" 
+git config --global alias.brvv "branch -vv" 
