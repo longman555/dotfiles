@@ -261,12 +261,12 @@ augroup END
 " .cファイルの既定値
 let g:quickrun_config.c = {
 \   "type" : 'c/gcc',
-\   "cmdopt" : '-Wall -Wextra -Wpedantic',
+\   "cmdopt" : '-std=c99 -Wall -Wextra -Wpedantic',
 \}
 
 " :Quickrun c/clang として実行した場合に適用される
 let g:quickrun_config['c/clang'] = {
-\   "cmdopt" : '-Weverything -Wextra -Wpedantic',
+\   "cmdopt" : '-std=c99 -Weverything -Wextra -Wpedantic',
 \}
 " -*-*-*- [ C setting end ] -*-*-*- "
 
