@@ -6,39 +6,36 @@ if has("vim_starting")
 
         set nocompatible               " Be iMproved
         " Required:
-        set runtimepath+=~/editor/vim74/bundle/neobundle.vim/
+        " パスの指定はUnix式・Windows式のいずれでも動作するみたい
+"       set runtimepath+=~/editor/vim74/bundle/neobundle.vim/
+        set runtimepath+=%USERPROFILE%\editor\vim74\bundle\neobundle.vim
 
     elseif has("unix")
 
         set nocompatible               " Be iMproved
-
         " Required:
-"        set runtimepath+=~/.vim/bundle/neobundle.vim/
         set runtimepath+=~/dotfiles/.vim/bundle/neobundle.vim/
 
     elseif has("macunix")
 
         set nocompatible               " Be iMproved
-
         " Required:
         set runtimepath+=~/.vim/bundle/neobundle.vim/
 
-    else
-        echo "Unknown Operating System"
     endif
 endif
 
 if has("win32") || has("win64")
     " Required:
-    call neobundle#begin(expand('~/editor/vim74/bundle/'))
+    " Windows式でも expand の引数にできるが、環境変数を使う場合で、
+    " % が文字列の先頭に来る場合、空白を直前に入れておかないと、
+    " expand関数内部で変換子として解釈されてしまう。
+"   call neobundle#begin(expand('~/editor/vim74/bundle/'))
+    call neobundle#begin(expand(' %USERPROFILE%\editor\vim74\bundle\'))
 elseif has("unix")
     " Required:
-"    call neobundle#begin(expand('~/.vim/bundle/'))
     call neobundle#begin(expand('~/dotfiles/.vim/bundle/'))
 elseif has("macunix")
-    " Required:
-    call neobundle#begin(expand('~/.vim/bundle/'))
-else    "Unknown Operating System
     " Required:
     call neobundle#begin(expand('~/.vim/bundle/'))
 endif
@@ -53,9 +50,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/vimproc.vim', {
             \ 'build' : {
             \     'windows' : 'tools\\update-dll-mingw',
-            \     'cygwin' : 'make -f make_cygwin.mak',
-            \     'mac' : 'make -f make_mac.mak',
-            \     'unix' : 'make -f make_unix.mak',
+            \     'cygwin'  : 'make -f make_cygwin.mak',
+            \     'mac'     : 'make -f make_mac.mak',
+            \     'unix'    : 'make -f make_unix.mak',
             \    },
             \ }
 NeoBundle 'thinca/vim-quickrun'
@@ -91,13 +88,12 @@ NeoBundleCheck
 " -*-*-*- [ Quickrun config begin ] -*-*-*- 
 let g:quickrun_config = {
             \   "_" : { 
-            \       "outputter/buffer/split" : ":aboveleft 10sp",
+            \       "outputter/buffer/split" : "aboveleft 10sp",
             \       "runner" : "vimproc",
+            \       "runner/vimproc/sleep" : 0,
             \       "runner/vimproc/updatetime" : 40,
             \   },
             \}
-" impossible to set with the above at the same time?
-"let g:quickrun_config={'*': {'split': ''}}
 
 " Ctrl+C to suspend quickrun currently running
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
@@ -184,17 +180,16 @@ nmap <F3> :s///g<Left><Left><Left><Left><Left>
 nmap <F4> :%s///g<Left><Left><Left>
 imap <F5> %3d
 map <F7> i{<Esc>ea}<Esc>
-
 " set the directory currently opening file as current directory.
 cmap <F9> :cd %:h<CR> 
 
 " C-space to ESC
-imap <C-Space> <ESC>
+"imap <C-Space> <ESC>
 
 " SPACE to scroll the screen
-nnoremap <Space> <PageDown>
+"nnoremap <Space> <PageDown>
 " SHIFT+SPACE to scroll the screen backward
-nnoremap <S-Space> <PageUP>
+"nnoremap <S-Space> <PageUP>
 
 " CTRL-hjkl to move the active window
 nnoremap <C-j> <C-w>j
@@ -255,6 +250,24 @@ augroup vimrc-set_filetype_c
     autocmd!
     autocmd FileType c call s:c()
 augroup END
+
+" この形式だと、明示的に :Quickrun c/gcc と実行した時だけ適用される。
+" 単純に.cファイルを開いて、<Leader>r と実行しただけでは適用されない。
+"let g:quickrun_config['c/gcc'] = {
+"    \ 'type' : 'c/gcc',
+"    \ 'cmdopt' : '-Wall -Wextra -Wpedantic abababa',
+"    \}
+
+" .cファイルの既定値
+let g:quickrun_config.c = {
+\   "type" : 'c/gcc',
+\   "cmdopt" : '-Wall -Wextra -Wpedantic',
+\}
+
+" :Quickrun c/clang として実行した場合に適用される
+let g:quickrun_config['c/clang'] = {
+\   "cmdopt" : '-Weverything -Wextra -Wpedantic',
+\}
 " -*-*-*- [ C setting end ] -*-*-*- "
 
 " -*-*-*- [ C++ setting begin ] -*-*-*- "
@@ -262,16 +275,30 @@ augroup END
 function! s:cpp()
     if has("win32") || has("win64")
         setlocal path+=G:/arkray2/boost/boost_1_57_0,C:\MinGW\lib\gcc\mingw32\4.8.1\include\c++
+        setlocal path+=G:/arkray2/boost/boost_1_57_0,C:\MinGW64\MinGW64\x86_64-w64-mingw32\include\c++
     elseif has("unix")
         setlocal path+=~/Dropbox/src/include
     endif
 endfunction
-let $CPP_STDLIB = "C:/MinGW/lib/gcc/mingw32/4.8.1/include/c++"
+
+let $CPP_STDLIB = "C:/MinGW64/MinGW64/x86_64-w64-mingw32/include/c++"
 augroup vimrc-set_filetype_cpp
     autocmd!
     autocmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | endif
     autocmd FileType cpp call s:cpp()
 augroup END
+
+" .cppファイルの既定値
+let g:quickrun_config.cpp = {
+\   'type' : 'cpp/g++',
+\   'cmdopt' : '-std=c++11 -Wall -Wextra -Wpedantic',
+\}
+
+" :Quickrun c/clang++ として実行した場合に適用される
+let g:quickrun_config['cpp/clang++'] = {
+\   'type' : 'cpp/clang++',
+\   'cmdopt' : '-std=c++11 -Weverything -Wextra -Wpedantic',
+\}
 " -*-*-*- [ C++ setting end ] -*-*-*- "
 
 " -*-*-*- [ Java setting begin ] -*-*-*- "
@@ -303,7 +330,7 @@ function! s:has_colorscheme(name)
     return !empty(globpath(&rtp, pat))
 endfunction
 
-if s:has_colorscheme('solarized')
+if s:has_colorscheme('solarized') && !(has('win32') || has('win64'))
     let g:solarized_termcolors=256
     set background=dark
     colorscheme solarized

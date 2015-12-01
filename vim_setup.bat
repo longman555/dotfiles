@@ -23,20 +23,11 @@ REM    vim -e -c "NeoBundleInstall" -c "q"
 :FinishNeoBundleInit
 
 rem 手動で git submodule update を実行しなければならないための措置。
-rem 一度 vim を起動してプラグインをインストールしないと、Neosnippet と
-rem Quickrun 、vimproc に関する以下の処理が失敗する。
-rem 現状、vimproc でのライブラリの生成に失敗してしまう。失敗した場合、
-rem vimproc.vim を削除するか否かのプロンプトがでるが、Noを選ぶこと。
+rem 一度 vim を起動してプラグインをインストールしないと、ここ以下の処理が失敗する。
 vim -e -c "NeoBundleInstall" -c "q"
-
-rem vimproc.vim の自動ビルドが失敗してしまうため、ライブラリをダウンロードする
-curl --silent --location https://github.com/Shougo/vimproc.vim/releases/download/ver.9.2/vimproc_win64.dll > %THIS_DIR%\.vim\bundle\vimproc.vim\lib\vimproc_win64.dll
 
 rem Set up for Neosnippet
 move %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets_bu
 mklink /j %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\neosnippets
-
-rem Set up for Quickrun
-copy %THIS_DIR%\.vim\vim-quickrun\autoload\quickrun.vim %THIS_DIR%\.vim\bundle\vim-quickrun\autoload\
 
 exit /b 0
