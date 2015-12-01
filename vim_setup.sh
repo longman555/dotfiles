@@ -19,22 +19,17 @@ if [ -z "`ls -A ${NB_DIR}`" ]; then
     git submodule update
     cd ${CURRENT_DIR}
 
-#    vim -s ${THIS_DIR}/command.dat
-#    vim -e -s < ${THIS_DIR}/command.dat
+    # vim を起動し、NeoBundle にプラギンをインストールさせて、終了する
     vim -e -c "NeoBundleInstall" -c "q"
     # FIXME どうやったら以下の $? が 0 を返すようになる？
-    echo 'the result of "vim -e -c" ' $?
+    echo 'the result of "vim -e -c " ' $?
 fi
 
+################################################################################
+# これ以下の処理は、一度vimを起動しプラギンをインストールしていないと失敗する  #
+################################################################################
+
 # Set up for Neosnippet 
-# 最初にvimを起動してNeoBundleInstallを実行しないとエラー
-#SNIP_DIR=${THIS_DIR}/.vim/neosnippets
-#NEOSNIPPET_DIR=${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets
-#for snip in `ls $SNIP_DIR`; do
-#    if [ "_${snip##*.}" = "_snip" ]; then
-#        cp -f ${SNIP_DIR}/${snip} ${NEOSNIPPET_DIR}/${snip}
-#    fi
-#done
 mv ${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets ${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets_bu
 ln -sfT ${THIS_DIR}/.vim/neosnippets ${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets
 
