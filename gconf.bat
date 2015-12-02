@@ -1,13 +1,13 @@
 @echo off
 setlocal
 
-rem shift を使用するため、このファイル名を念のため保存しておく。
-set BATCH_FILE_NAME=%0
-shift
-
 rem gconf.bat: git config のラッパーコマンド
 rem 変数(既定)・エイリアスを、グローバル(既定)・ローカルの設定ファイルへ、
 rem セット(既定)・アンセット することができる。
+
+rem shift を使用するため、このファイル名を念のため保存しておく。
+set BATCH_FILE_NAME=%0
+shift
 
 rem ヘルプメッセージを出力する
 if "%~0"=="/?"        (call :PrintUsage && goto End
