@@ -1,6 +1,6 @@
 #!/bin/bash
 # gconf.sh: git config のラッパー
-# グローバル(既定)/ローカルの設定ファイルに、変数(既定)/エイリアスを、
+# ローカル(既定)/グローバルの設定ファイルに、変数(既定)/エイリアスを、
 # セット(既定)/アンセットすることができる。
 
 print_usage() {
@@ -18,7 +18,7 @@ print_usage() {
 case $1 in "-h" | "--help") print_usage; exit 0 ;; esac
 
 # 引数のオプションを検査
-scope="--global"    # グローバル(default) or ローカル
+scope="--local"     # ローカル(default) or グローバル
 target=""           # 通常の変数(default) or エイリアス
 action=""           # セット(default) or アンセット
 debug=""
