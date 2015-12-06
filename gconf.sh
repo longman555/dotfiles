@@ -25,11 +25,11 @@ debug=""
 dryrun=""
 for arg in $@; do
     case $arg in
-        "-g" | "--global")              ;;
+        "-g" | "--global")              scope="--global";;
         "-l" | "--local")               scope="--local" ;;
-        "-v" | "--var" | "--variable")  ;;
+        "-v" | "--var" | "--variable")  target=""       ;;
         "-a" | "--alias")               target="alias." ;;
-        "-s" | "--set")                 ;;
+        "-s" | "--set")                 action=""       ;;
         "-u" | "--unset")               action="--unset" ;;
         "-d" | "--dryrun")              dryrun="dryrun" ;;
         "-D" | "--debug")               debug="debug" ;;
