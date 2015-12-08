@@ -71,9 +71,20 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 
 NeoBundle 'vim-jp/vimdoc-ja'
-"colorschemes
+
+" Colorschemes
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
+
+"NeoBundle 'chriskempson/colors'
+NeoBundle 'chriskempson/base16-vim'
+"let base16colorspace=256  " Access colors present in 256 colorspace
+
+" vim-airline: statusline 
+"NeoBundle 'bling/vim-airline'
+
+" lightline.vim: statusline 
+NeoBundle 'itchyny/lightline.vim'
 
 call neobundle#end()
 
@@ -334,9 +345,17 @@ if s:has_colorscheme('solarized') && !(has('win32') || has('win64'))
     let g:solarized_termcolors=256
     set background=dark
     colorscheme solarized
+    " Setting for lightline.vim 
+    let g:lightline = {
+\       'colorscheme' : 'solarized',
+\   }
 else
     colorscheme industry
+"    let g:lightline = {
+"\       'colorscheme' : 'industry',
+"\   }
 endif
+
 
 " -*-*-*- font config -*-*-*- 
 if has("gui_running")
