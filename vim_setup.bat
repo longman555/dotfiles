@@ -4,9 +4,11 @@ rem “––Ê‚ÌŠÔAÅ‰‚Éè“®‚Å %~dp0%\.vim\bundle\neobundle.vim ‚É‚Ä
 rem git submodule update ƒRƒ}ƒ“ƒh‚ğÀs‚µA‚»‚ÌŒã‚±‚Ìƒoƒbƒ`ƒtƒ@ƒCƒ‹‚ğÀs‚·‚éB
 
 set THIS_DIR=%~dp0
-mklink C:\Users\arkray2\editor\vim74\_vimrc %THIS_DIR%\_vimrc
-mklink C:\Users\arkray2\editor\vim74\_gvimrc %THIS_DIR%\_gvimrc
-mklink /j C:\Users\arkray2\editor\vim74\bundle %THIS_DIR%\.vim\bundle
+
+mklink %USERPROFILE%\editor\vim74\_vimrc %THIS_DIR%\_vimrc
+mklink %USERPROFILE%\editor\vim74\_gvimrc %THIS_DIR%\_gvimrc
+mklink /j %USERPROFILE%\editor\vim74\bundle %THIS_DIR%\.vim\bundle
+mklink /j %USERPROFILE%\dotfiles\.vim\bundle %THIS_DIR%\.vim\bundle
 
 rem Set up for NeoBundle
 rem ©“®‚Å git submodule init/update ‚ğs‚¢‚½‚¢‚ªAãè‚­‚¢‚©‚È‚¢B
@@ -27,7 +29,8 @@ rem ˆê“x vim ‚ğ‹N“®‚µ‚Äƒvƒ‰ƒOƒCƒ“‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚È‚¢‚ÆA‚±‚±ˆÈ‰º‚Ìˆ—‚ª¸”s‚·‚
 vim -e -c "NeoBundleInstall" -c "q"
 
 rem Set up for Neosnippet
-move %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets_bu
-mklink /j %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\neosnippets
+rem move %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets_bu
+rem mklink /j %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\neosnippets
+mklink /j %USERPROFILE%\dotfiles\.vim\neosnippets %THIS_DIR%\.vim\neosnippets
 
 exit /b 0

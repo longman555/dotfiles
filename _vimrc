@@ -1,44 +1,16 @@
 scriptencoding utf-8
 
-" -*-*-*- [ NeoBundle Config Begin ] -*-*-*- 
+"=================================================
+" NeoBundle        ===============================
+"=================================================
 if has("vim_starting")
-    if has("win32") || has("win64")
-
-        set nocompatible               " Be iMproved
-        " Required:
-        " パスの指定はUnix式・Windows式のいずれでも動作するみたい
-"       set runtimepath+=~/editor/vim74/bundle/neobundle.vim/
-        set runtimepath+=%USERPROFILE%\editor\vim74\bundle\neobundle.vim
-
-    elseif has("unix")
-
-        set nocompatible               " Be iMproved
-        " Required:
-        set runtimepath+=~/dotfiles/.vim/bundle/neobundle.vim/
-
-    elseif has("macunix")
-
-        set nocompatible               " Be iMproved
-        " Required:
-        set runtimepath+=~/.vim/bundle/neobundle.vim/
-
-    endif
+    set nocompatible        " Be iMproved
+    " Required:
+    set runtimepath+=~/dotfiles/.vim/bundle/neobundle.vim/
 endif
 
-if has("win32") || has("win64")
-    " Required:
-    " Windows式でも expand の引数にできるが、環境変数を使う場合で、
-    " % が文字列の先頭に来る場合、空白を直前に入れておかないと、
-    " expand関数内部で変換子として解釈されてしまう。
-"   call neobundle#begin(expand('~/editor/vim74/bundle/'))
-    call neobundle#begin(expand(' %USERPROFILE%\editor\vim74\bundle\'))
-elseif has("unix")
-    " Required:
-    call neobundle#begin(expand('~/dotfiles/.vim/bundle/'))
-elseif has("macunix")
-    " Required:
-    call neobundle#begin(expand('~/.vim/bundle/'))
-endif
+" Required:
+call neobundle#begin(expand('~/dotfiles/.vim/bundle/'))
 
 " Let NeoBundle manage NeoBundle
 " Required:
@@ -96,46 +68,65 @@ filetype plugin indent on
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
-" -*-*-*- [ NeoBundle Config End ] -*-*-*- 
 
-" -*-*-*- [ Quickrun Config Begin ] -*-*-*- 
+"=================================================
+" Quickrun          ==============================
+"=================================================
 let g:quickrun_config = {
             \   "_" : { 
-            \       "outputter/buffer/split" : "aboveleft 10sp",
-            \       "runner" : "vimproc",
-            \       "runner/vimproc/sleep" : 0,
-            \       "runner/vimproc/updatetime" : 40,
+            \       "outputter/buffer/split"    : "aboveleft 10sp",
+            \       "runner"                    : "vimproc",
+            \       "runner/vimproc/sleep"      : 50,
+            \       "runner/vimproc/updatetime" : 10,
             \   },
             \}
 
 " Ctrl+c to suspend quickrun running currently 
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() :
 \                                                     "\<C-c>"
-" .cファイルの既定値
+
+" OK 1
+"let g:quickrun_config = {
+"\   'c' :           { 'type' : 'c/gcc' },
+"\   'c/gcc' :       { 'cmdopt' : '-std=c99 -Wall -Wextra -Wpedantic', },
+"\   'c/clang' :     { 'cmdopt' : '-std=c99 -Weverything -Wextra -Wpedantic', },
+"\   'cpp' :         { 'type' : 'cpp/g++' },
+"\   'cpp/g++' :     { 'cmdopt' : '-std=c++11 -Wall -Wextra -Wpedantic', },
+"\   'cpp/clang++' : { 'cmdopt' : '-std=c++11 -Wall -Wextra -Wpedantic', },
+"\}
+
+" OK 2
+let g:quickrun_config = { }
 let g:quickrun_config.c = {
-\   "type" : 'c/gcc',
-\   "cmdopt" : '-std=c99 -Wall -Wextra -Wpedantic',
+\   'type' : 'c/gcc',
+\   'c/gcc' : {
+\       'cmdopt' : '-std=c99 -Wall -Wextra -Wpedantic',
+\   },
+\   'c/clang' : {
+\       'cmdopt' : '-std=c99 -Weverything -Wextra -Wpedantic',
+\   },
 \}
 
-" :Quickrun c/clang として実行した場合に適用される
-let g:quickrun_config['c/clang'] = {
-\   "cmdopt" : '-std=c99 -Weverything -Wextra -Wpedantic',
-\}
-
-" .cppファイルの既定値
 let g:quickrun_config.cpp = {
-\   'type'   : 'cpp/g++',
-\   'cmdopt' : '-std=c++11 -Wall -Wextra -Wpedantic',
+\   'type' : 'cpp/g++',
+\   'cpp/g++' : {
+\       'cmdopt' : '-std=c++11 -Wall -Wextra -Wpedantic',
+\   },
+\   'cpp/clang++' : {
+\       'cmdopt' : '-std=c++11 -Weverything -Wextra -Wpedantic',
+\   },
 \}
 
-" :Quickrun c/clang++ として実行した場合に適用される
-let g:quickrun_config['cpp/clang++'] = {
-\   'type'   : 'cpp/clang++',
-\   'cmdopt' : '-std=c++11 -Weverything -Wextra -Wpedantic',
-\}
-" -*-*-*- [ Quickrun Config End ] -*-*-*- 
+" この形式だと、明示的に :Quickrun c/gcc と実行した時だけ適用される。
+" 単純に.cファイルを開いて、<Leader>r と実行しただけでは適用されない。
+"let g:quickrun_config['c/gcc'] = {
+"\   'type' : 'c/gcc',
+"\   'cmdopt' : '-Wall -Wextra -Wpedantic abababa',
+"\}
 
-" -*-*-*- [ Unite.vim Config Begin ] -*-*-*-
+"=================================================
+" Unite.vim         ==============================
+"=================================================
 "let g:unite_enable_start_insert=1
 let g:unite_source_file_mru_limit=200
 "nnoremap <C-U><C-B> :Unite -buffer-name=buffer&file@Unite buffer file<CR>
@@ -151,13 +142,15 @@ nnoremap <silent> ,um :<C-u>Unite -buffer-name=MRU@Unite file_mru<CR>
 
 "nnoremap <C-U><C-Y> :Unite -buffer-name=register@Unite register<CR>
 nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register@Unite register<CR>
-" -*-*-*- [ Unite.vim Config End ] -*-*-*-
 
-" -*-*-*- [ NERDTree Config Begin ] -*-*-*-
+"=================================================
+" NERDTree          ==============================
+"=================================================
 nnoremap <silent> <C-n> :NERDTreeToggle<CR>
-" -*-*-*- [ NERDTree Config End ] -*-*-*-
 
-" -*-*-*- [ neocompletion Config Begin ] -*-*-*-
+"=================================================
+" neocomplete       ==============================
+"=================================================
 " validate completion
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_ignore_case = 1
@@ -202,18 +195,14 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-" -*-*-*- [ neocompletion Config End ] -*-*-*-
 
-" -*-*-*- [ neosnippet Config Begin ] -*-*-*-
+"=================================================
+" neosnippet        ==============================
+"=================================================
 " スニペットファイルのディレクトリを指定する 
-if has("win32") || has("win64")
-    let g:neosnippet#snippets_directory='%USERPROFILE%\editor\vim74\bundle\.vim\neosnippets'
-elseif has("unix")
-    " パスを引用符で囲まなければエラーが出た。
-    let g:neosnippet#snippets_directory='~/dotfiles/.vim/neosnippets'
-    " エラーが出る
-"    let g:neosnippet#snippets_directory='./.vim/neosnippets'
-endif
+let g:neosnippet#snippets_directory='~/dotfiles/.vim/neosnippets'
+" エラーが出る
+"let g:neosnippet#snippets_directory='./.vim/neosnippets'
 
 " For snippet_complete marker.
 if has('conceal')
@@ -233,9 +222,10 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " Open the snippet file
 nnoremap <silent> ,nse :NeoSnippetEdit -split -horizontal -direction=botright<CR>
-" -*-*-*- [ neosnippet Config End ] -*-*-*-
 
-" -*-*-*- [ Caw.vim Config Begin ] -*-*-*-
+"=================================================
+" Caw.vim           ==============================
+"=================================================
 " Mapping to switch comment-out
 " \c to comment-out
 " \c again to cancel comment-out
@@ -250,9 +240,10 @@ vmap \C <Plug>(caw:I:uncomment)
 " to NOT append extra spaces
 let g:caw_i_sp=""
 let g:caw_I_sp=""
-" -*-*-*- [ Caw.vim Config End ] -*-*-*-
 
-" -*-*-*- [ General Config Begin] -*-*-*- 
+"=================================================
+" General Config    ==============================
+"=================================================
 syntax enable           " or 'syntax on'
 set nobackup            " ファイル上書き時のバックアップを取らない
 set smartindent         " 高度な自動インデント
@@ -265,12 +256,22 @@ set history=1000        " コマンドと検索の履歴保存数
 set number              " 行番号を表示 
 set list                " 改行やタブ文字を可視化する 
 set ruler               " 現在のカーソルの位置を表示する 
+set incsearch           " インクリメンタルサーチ 
 set hlsearch            " 検索パターンに適合した文字列を強調表示 
+set nrformats=alpha,hex " <C-a>,<C-x>で英字も増減する 
+set linespace=2         " 行間の幅のピクセル数 
+set guioptions-=m       " メニューバーを非表示 
+set guioptions-=T       " ツールバーを非表示 
+"set equalalways         " ウィンドウのサイズを揃える(Quickrunまで影響を受ける)
+set clipboard=unnamed   " 基本的にクリップボードにコピー 
+set scrolloff=5         " 上下のスクロール開始行 
+set showtabline=2       " タブページのラベルを常に表示 
 set showcmd             " コマンドを画面の最下行に表示する 
 set laststatus=2        " いつステータス行を表示するか(lightline.vim で必要)
-" -*-*-*- [ General Config End] -*-*-*- 
 
-" -*-*-*- [ General Key Mapping Config Begin ] -*-*-*- "
+"=================================================
+" Key Mapping       ==============================
+"=================================================
 imap <F1> " -*-*-*-   -*-*-*- <ESC>9hi
 imap <F2> /*----------TEST-----------*/<ESC>11hi
 nmap <F3> :s///g<Left><Left><Left><Left><Left>
@@ -279,14 +280,6 @@ imap <F5> %3d
 map <F7> i{<Esc>ea}<Esc>
 " set the directory currently opening file as current directory.
 cmap <F9> :cd %:h<CR> 
-
-" C-space to ESC
-"imap <C-Space> <ESC>
-
-" SPACE to scroll the screen
-"nnoremap <Space> <PageDown>
-" SHIFT+SPACE to scroll the screen backward
-"nnoremap <S-Space> <PageUP>
 
 " CTRL-hjkl to move the active window
 nnoremap <C-j> <C-w>j
@@ -309,9 +302,10 @@ imap `  `<ESC>vypi
 " move the bracket corespond to the current bracket 
 nnoremap [ %
 nnoremap ] %
-" -*-*-*- [ General Key Mapping Config End ] -*-*-*- "
-"
-" -*-*-*- [ Font Config Begin ] -*-*-*- "
+
+"=================================================
+" Font              ==============================
+"=================================================
 if has("gui_running")
     if has("gui_gtk2")
         "set guifont=Luxi\ Mono\ 12
@@ -325,9 +319,10 @@ if has("gui_running")
         set guifont=MeiryoKe_Console:h12:cSHIFTJIS
     endif
 endif
-" -*-*-*- [ Font Config End ] -*-*-*- "
 
-" -*-*-*- [ Colorscheme Config Begin ] -*-*-*- "
+"=================================================
+" Colorscheme       ==============================
+"=================================================
 set t_Co=64
 "set t_Co=256       " cmd(Windows)では表示がおかしくなる 
 
@@ -341,18 +336,15 @@ if s:has_colorscheme('solarized') && !(has('win32') || has('win64'))
     set background=dark
     colorscheme solarized
     " Setting for lightline.vim 
-    let g:lightline = {
-\       'colorscheme' : 'solarized',
-\   }
+    let g:lightline = { 'colorscheme' : 'solarized', }
 else
     colorscheme industry
-"    let g:lightline = {
-"\       'colorscheme' : 'industry',
-"\   }
+"   let g:lightline = { 'colorscheme' : 'industry', } " エラーが発生
 endif
-" -*-*-*- [ Colorscheme Config End ] -*-*-*- "
 
-" -*-*-*- [ Shell Script Config Begin ] -*-*-*- "
+"=================================================
+" Shell Script      ==============================
+"=================================================
 " タブ幅やインデント時の空白を2個にする
 function! s:sh()
     setlocal shiftwidth=2
@@ -364,9 +356,10 @@ augroup vimrc-sh
     autocmd!
     autocmd Filetype sh call s:sh()
 augroup END
-" -*-*-*- [ Shell Script Config End ] -*-*-*- "
 
-" -*-*-*- [ C setting begin ] -*-*-*- "
+"=================================================
+" C                 ==============================
+"=================================================
 function! s:c()
     if has("win32") || has("win64")
         setlocal path+=G:/arkray2/Dropbox/src/include
@@ -379,16 +372,10 @@ augroup vimrc-set_filetype_c
     autocmd FileType c call s:c()
 augroup END
 
-" この形式だと、明示的に :Quickrun c/gcc と実行した時だけ適用される。
-" 単純に.cファイルを開いて、<Leader>r と実行しただけでは適用されない。
-"let g:quickrun_config['c/gcc'] = {
-"    \ 'type' : 'c/gcc',
-"    \ 'cmdopt' : '-Wall -Wextra -Wpedantic abababa',
-"    \}
 
-" -*-*-*- [ C setting end ] -*-*-*- "
-
-" -*-*-*- [ C++ setting begin ] -*-*-*- "
+"=================================================
+" C++               ==============================
+"=================================================
 " 拡張子の付いていないC++のヘッダファイルを開いた時にハイライトする
 function! s:cpp()
     if has("win32") || has("win64")
@@ -406,17 +393,18 @@ augroup vimrc-set_filetype_cpp
     autocmd FileType cpp call s:cpp()
 augroup END
 
-" -*-*-*- [ C++ setting end ] -*-*-*- "
-
-" -*-*-*- [ Java setting begin ] -*-*-*- "
+"=================================================
+" Java              ==============================
+"=================================================
 let  java_highlight_all=1
 let  java_highlight_functions="style"
 let  java_allow_cpp_keywords=1
 let  java_highlight_functions=1
 "let  java_space_errors=1
-" -*-*-*- [ Java setting end ] -*-*-*- "
 
-" -*-*-*- [ Ruby Config Begin ] -*-*-*- "
+"=================================================
+" Ruby              ==============================
+"=================================================
 " タブ幅やインデント時の空白を2個にする
 function! s:ruby()
     setlocal shiftwidth=2
@@ -428,5 +416,3 @@ augroup vimrc-ruby
     autocmd!
     autocmd Filetype ruby call s:ruby()
 augroup END
-" -*-*-*- [ Ruby Config End ] -*-*-*- "
-
