@@ -262,7 +262,7 @@ set nrformats=alpha,hex " <C-a>,<C-x>で英字も増減する
 set linespace=2         " 行間の幅のピクセル数 
 set guioptions-=m       " メニューバーを非表示 
 set guioptions-=T       " ツールバーを非表示 
-"set equalalways         " ウィンドウのサイズを揃える(Quickrunまで影響を受ける)
+"set equalalways         " ウィンドウのサイズを揃える(Quickrunまで影響)
 set clipboard=unnamed   " 基本的にクリップボードにコピー 
 set scrolloff=5         " 上下のスクロール開始行 
 set showtabline=2       " タブページのラベルを常に表示 

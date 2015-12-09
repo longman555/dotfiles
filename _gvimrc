@@ -1,15 +1,9 @@
 scriptencoding utf-8
 
-" set the column width on the screen
-set columns=90
-" the number of lines on the screen
-set lines=40
-
-" the number of lines for command line on the screen
-set cmdheight=2
-
-" Enable mouse support
-set mouse=a
+set columns=80      " 幅 
+set lines=40        " 行数 
+set cmdheight=2     " コマンドラインの幅 
+set mouse=a         " マウスを利用可能に 
 
 " font setting
 if has("gui_running")
