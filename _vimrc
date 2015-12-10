@@ -50,7 +50,7 @@ NeoBundle 'tomasr/molokai'
 "NeoBundle 'chriskempson/colors'
 NeoBundle 'chriskempson/base16-vim'
 
-" Preview each colorscheme: ':Unite colorscheme -auto-preview -winheight=10'
+" Preview colorschemes: ':Unite colorscheme -auto-preview -winheight=10'
 NeoBundle 'ujihisa/unite-colorscheme'
 
 " Statusline: 
@@ -82,8 +82,8 @@ let g:quickrun_config = {
             \}
 
 " Ctrl+c to suspend quickrun running currently 
-nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() :
-\                                                     "\<C-c>"
+nnoremap <expr><silent> <C-c> quickrun#is_running() ?
+\                             quickrun#sweep_sessions() : "\<C-c>"
 
 " OK 1
 "let g:quickrun_config = {
@@ -245,13 +245,13 @@ let g:caw_I_sp=""
 " General Config    ==============================
 "=================================================
 syntax enable           " or 'syntax on'
-set nobackup            " ファイル上書き時のバックアップを取らない
-set smartindent         " 高度な自動インデント
-set backspace=2         " set backspace=indet,eol,start
+set nobackup            " ファイル上書き時のバックアップを取らない 
+set smartindent         " 高度な自動インデント 
+set backspace=2         " set backspace=indet,eol,start 
 set shiftwidth=4        " 自動インデント時の空白の数 
-set tabstop=4           " tab文字を空白何文字分で表現するか
-set softtabstop=4       " tabキー押下時に挿入される空白量
-set expandtab           " タブ文字ではなく空白文字を使う"
+set tabstop=4           " tab文字を空白何文字分で表現するか 
+set softtabstop=4       " tabキー押下時に挿入される空白量 
+set expandtab           " タブ文字ではなく空白文字を使う 
 set history=1000        " コマンドと検索の履歴保存数 
 set number              " 行番号を表示 
 set list                " 改行やタブ文字を可視化する 
@@ -262,12 +262,12 @@ set nrformats=alpha,hex " <C-a>,<C-x>で英字も増減する
 set linespace=2         " 行間の幅のピクセル数 
 set guioptions-=m       " メニューバーを非表示 
 set guioptions-=T       " ツールバーを非表示 
-"set equalalways         " ウィンドウのサイズを揃える(Quickrunまで影響)
+"set equalalways        " ウィンドウのサイズを揃える(Quickrunまで影響)
 set clipboard=unnamed   " 基本的にクリップボードにコピー 
 set scrolloff=5         " 上下のスクロール開始行 
 set showtabline=2       " タブページのラベルを常に表示 
 set showcmd             " コマンドを画面の最下行に表示する 
-set laststatus=2        " いつステータス行を表示するか(lightline.vim で必要)
+set laststatus=2        " いつステータス行を表示するか(lightlineで必要)
 
 "=================================================
 " Key Mapping       ==============================
@@ -371,7 +371,6 @@ augroup vimrc-set_filetype_c
     autocmd!
     autocmd FileType c call s:c()
 augroup END
-
 
 "=================================================
 " C++               ==============================
