@@ -23,7 +23,7 @@ if has("gui_running")
     elseif has("gui_win32")
         "echo "gui_win32"
         set guifont=MeiryoKe_Console:h11:cSHIFTJIS
-        "set guifont=Ricty\ Discord\ 10
+"        set guifont=Ricty\ Discord\ 11
         set background=dark
         colorscheme solarized
     endif

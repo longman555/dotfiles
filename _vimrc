@@ -146,7 +146,8 @@ nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register@Unite register<CR>
 "=================================================
 " NERDTree          ==============================
 "=================================================
-nnoremap <silent> <C-n> :NERDTreeToggle<CR>
+"nnoremap <silent> <C-n> :NERDTreeToggle<CR>
+nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
 
 "=================================================
 " neocomplete       ==============================
@@ -268,6 +269,7 @@ set scrolloff=5         " 上下のスクロール開始行
 set showtabline=2       " タブページのラベルを常に表示 
 set showcmd             " コマンドを画面の最下行に表示する 
 set laststatus=2        " いつステータス行を表示するか(lightlineで必要)
+set grepprg=grep\ -nrH  " :grep に findstr ではなく grep を使用する
 
 "=================================================
 " Key Mapping       ==============================
@@ -316,7 +318,7 @@ if has("gui_running")
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
     elseif has("gui_win32")
         "set guifont=Luxi_Mono:h12:cANSI
-        set guifont=MeiryoKe_Console:h12:cSHIFTJIS
+        set guifont=MeiryoKe_Console:h11:cSHIFTJIS
     endif
 endif
 
@@ -352,7 +354,7 @@ function! s:sh()
     setlocal softtabstop=2
 endfunction
 
-augroup vimrc-sh
+augroup vimrc-sh-set_tabwidth
     autocmd!
     autocmd Filetype sh call s:sh()
 augroup END
@@ -362,12 +364,12 @@ augroup END
 "=================================================
 function! s:c()
     if has("win32") || has("win64")
-        setlocal path+=G:/arkray2/Dropbox/src/include
+        setlocal path+=$USERPROFILE2/Dropbox/src/include
     elseif has("unix")
         setlocal path+=~/Dropbox/src/include
     endif
 endfunction
-augroup vimrc-set_filetype_c
+augroup _vimrc-c-set_filetype_c
     autocmd!
     autocmd FileType c call s:c()
 augroup END
@@ -375,30 +377,31 @@ augroup END
 "=================================================
 " C++               ==============================
 "=================================================
-" 拡張子の付いていないC++のヘッダファイルを開いた時にハイライトする
 function! s:cpp()
     if has("win32") || has("win64")
-        setlocal path+=G:/arkray2/boost/boost_1_57_0,C:\MinGW\lib\gcc\mingw32\4.8.1\include\c++
-        setlocal path+=G:/arkray2/boost/boost_1_57_0,C:\MinGW64\MinGW64\x86_64-w64-mingw32\include\c++
+"        setlocal path+=$USERPROFILE2/boost/boost_1_57_0,C:\MinGW\lib\gcc\mingw32\4.8.1\include\c++
+        setlocal path+=$USERPROFILE2/boost/boost_1_57_0,C:\MinGW64\MinGW64\x86_64-w64-mingw32\include\c++
     elseif has("unix")
         setlocal path+=~/Dropbox/src/include
     endif
 endfunction
 
 let $CPP_STDLIB = "C:/MinGW64/MinGW64/x86_64-w64-mingw32/include/c++"
-augroup vimrc-set_filetype_cpp
+augroup _vimrc-cpp-set_filetype_cpp
     autocmd!
-    autocmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | endif
+    " 拡張子の付いていないC++のヘッダファイルを開いた時にハイライトする
+    autocmd BufReadPost $CPP_STDLIB/* 
+\       if empty(&filetype) | set filetype=cpp | endif
     autocmd FileType cpp call s:cpp()
 augroup END
 
 "=================================================
 " Java              ==============================
 "=================================================
-let  java_highlight_all=1
-let  java_highlight_functions="style"
-let  java_allow_cpp_keywords=1
-let  java_highlight_functions=1
+"let  java_highlight_all=1
+"let  java_highlight_functions="style"
+"let  java_allow_cpp_keywords=1
+"let  java_highlight_functions=1
 "let  java_space_errors=1
 
 "=================================================
@@ -411,7 +414,7 @@ function! s:ruby()
     setlocal softtabstop=2      " tabstopの値に準じる?
 endfunction
 
-augroup vimrc-ruby
+augroup _vimrc-ruby-set_tabwidth
     autocmd!
     autocmd Filetype ruby call s:ruby()
 augroup END
