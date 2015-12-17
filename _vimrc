@@ -73,20 +73,22 @@ NeoBundleCheck
 " Quickrun          ==============================
 "=================================================
 let g:quickrun_config = {
-            \   "_" : { 
-            \       "outputter/buffer/split"    : "aboveleft 10sp",
-            \       "runner"                    : "vimproc",
-            \       "runner/vimproc/sleep"      : 50,
-            \       "runner/vimproc/updatetime" : 10,
-            \   },
-            \}
-
-" Ctrl+c to suspend quickrun running currently 
-nnoremap <expr><silent> <C-c> quickrun#is_running() ?
-\                             quickrun#sweep_sessions() : "\<C-c>"
+\   "_" : { 
+\       "outputter/buffer/split"    : ":aboveleft 10sp",
+\       "runner"                    : "vimproc",
+\       "runner/vimproc/updatetime" : 10,
+\       "runner/vimproc/sleep"      : 10,
+\   },
+\}
 
 " OK 1
 "let g:quickrun_config = {
+"\   "_" : { 
+"\       "outputter/buffer/split"    : ":aboveleft 10sp",
+"\       "runner"                    : "vimproc",
+"\       "runner/vimproc/sleep"      : 50,
+"\       "runner/vimproc/updatetime" : 10,
+"\   },
 "\   'c' :           { 'type' : 'c/gcc' },
 "\   'c/gcc' :       { 'cmdopt' : '-std=c99 -Wall -Wextra -Wpedantic', },
 "\   'c/clang' :     { 'cmdopt' : '-std=c99 -Weverything -Wextra -Wpedantic', },
@@ -96,9 +98,8 @@ nnoremap <expr><silent> <C-c> quickrun#is_running() ?
 "\}
 
 " OK 2
-let g:quickrun_config = { }
-let g:quickrun_config.c = {
-\   'type' : 'c/gcc',
+let g:quickrun_c_config = {
+\   'c' :         { 'type' : 'c/gcc' },
 \   'c/gcc' : {
 \       'cmdopt' : '-std=c99 -Wall -Wextra -Wpedantic',
 \   },
@@ -106,16 +107,18 @@ let g:quickrun_config.c = {
 \       'cmdopt' : '-std=c99 -Weverything -Wextra -Wpedantic',
 \   },
 \}
+call extend(g:quickrun_config, g:quickrun_c_config)
 
-let g:quickrun_config.cpp = {
-\   'type' : 'cpp/g++',
-\   'cpp/g++' : {
+let g:quickrun_cpp_config = {
+\   'cpp' :         { 'type' : 'cpp/g++' },
+\   'cpp/g++' :     {
 \       'cmdopt' : '-std=c++11 -Wall -Wextra -Wpedantic',
 \   },
 \   'cpp/clang++' : {
 \       'cmdopt' : '-std=c++11 -Weverything -Wextra -Wpedantic',
 \   },
 \}
+call extend(g:quickrun_config, g:quickrun_cpp_config)
 
 " この形式だと、明示的に :Quickrun c/gcc と実行した時だけ適用される。
 " 単純に.cファイルを開いて、<Leader>r と実行しただけでは適用されない。
@@ -123,6 +126,10 @@ let g:quickrun_config.cpp = {
 "\   'type' : 'c/gcc',
 "\   'cmdopt' : '-Wall -Wextra -Wpedantic abababa',
 "\}
+
+" Ctrl+c to suspend quickrun running currently 
+nnoremap <expr><silent> <C-c> quickrun#is_running() ?
+\                             quickrun#sweep_sessions() : "\<C-c>"
 
 "=================================================
 " Unite.vim         ==============================
@@ -269,6 +276,7 @@ set scrolloff=5         " 上下のスクロール開始行
 set showtabline=2       " タブページのラベルを常に表示 
 set showcmd             " コマンドを画面の最下行に表示する 
 set laststatus=2        " いつステータス行を表示するか(lightlineで必要)
+set formatoptions-=ro   " 改行時にコメントしない
 set grepprg=grep\ -nrH  " :grep に findstr ではなく grep を使用する
 
 "=================================================
@@ -380,7 +388,8 @@ augroup END
 function! s:cpp()
     if has("win32") || has("win64")
 "        setlocal path+=$USERPROFILE2/boost/boost_1_57_0,C:\MinGW\lib\gcc\mingw32\4.8.1\include\c++
-        setlocal path+=$USERPROFILE2/boost/boost_1_57_0,C:\MinGW64\MinGW64\x86_64-w64-mingw32\include\c++
+        setlocal path+=$USERPROFILE2/boost/boost_1_57_0
+        setlocal path+=C:/MinGW64/MinGW64/x86_64-w64-mingw32/include/c++
     elseif has("unix")
         setlocal path+=~/Dropbox/src/include
     endif
